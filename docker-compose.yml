@@ -12,6 +12,11 @@ services:
     networks:
       - redcalendario
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   express-api:
     build: .
@@ -22,7 +27,8 @@ services:
       MONGODB_URI: mongodb://mongo:27017/festivos
       PORT: 8080
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - redcalendario
     restart: unless-stopped
