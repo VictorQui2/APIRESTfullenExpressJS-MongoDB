@@ -37,6 +37,7 @@ pipeline {
         stage('Detener Contenedores Anteriores') {
             steps {
                 bat 'docker compose down --remove-orphans'
+                bat 'docker rm -f dockerbdfestivos dockerapifestivos 2>nul & exit /b 0'
             }
         }
 
